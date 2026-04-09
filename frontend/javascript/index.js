@@ -3,7 +3,7 @@ import "$styles/syntax-highlighting.css"
 
 /* ─── SLIDE ORDER ─────────────────────────────────────────── */
 const SLIDES = [
-  { label: 'Capa',          url: '/'               },
+  { label: 'Inicio',          url: '/'               },
   { label: 'Problema',      url: '/problema/'      },
   { label: 'Solução',       url: '/solucao/'       },
   { label: 'Modos',         url: '/modos/'         },
