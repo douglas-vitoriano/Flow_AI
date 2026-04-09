@@ -192,7 +192,7 @@ resultado:
     - val: "3×"
       label: "Modos especializados"
       sub: "Criatividade, Reflexão, Marca"
-    - val: "< 1s"
+    - val: "< 3s"
       label: "Latência média"
       sub: "Resposta em tempo real"
     - val: "R$0"

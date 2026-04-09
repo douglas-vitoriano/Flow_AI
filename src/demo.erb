@@ -34,7 +34,7 @@ title: Demo
         <span class="send-icon">→</span>
       </button>
     </div>
-    <div class="chat-hint-bar">Enter envia · Shift+Enter pula linha</div>
+    <div class="chat-hint-bar chat-hint-bar--desktop">Enter envia · Shift+Enter pula linha</div>
   </div>
 </section>
 
@@ -146,7 +146,7 @@ title: Demo
     } catch (e) {
       removeThinking();
       showError(e.message);
-      history.pop(); // Remove a última mensagem do user do histórico para não travar a conversa
+      history.pop();
     } finally {
       isLoading = false; sendBtn.disabled = false; chatInput.focus();
     }
@@ -160,7 +160,9 @@ title: Demo
 
   tabs.forEach(tab => tab.addEventListener('click', () => activateMode(tab.dataset.mode)));
   sendBtn.addEventListener('click', send);
-  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
 
   activateMode('criatividade');
 })();

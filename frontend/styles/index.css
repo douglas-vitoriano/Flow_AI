@@ -506,3 +506,7 @@ a:hover{color:var(--white)}
   padding:10px 14px;background:rgba(255,50,50,.08);border:1px solid rgba(255,80,80,.25);
   border-radius:var(--radius-sm);font-size:11px;color:#ff6b6b;font-family:var(--font-mono);
 }
+
+/* ─── HINT BAR (só desktop) ──────────────────────────────── */
+.chat-hint-bar--desktop{display:none}
+@media(min-width:1024px){.chat-hint-bar--desktop{display:block}}
