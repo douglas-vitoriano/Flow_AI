@@ -1,9 +1,18 @@
 require "net/http"
 require "json"
+require "dotenv"
+Dotenv.load if ENV["RACK_ENV"] != "production"
 
-if File.exist?(File.join(Dir.pwd, ".env"))
-  require "dotenv"
-  Dotenv.load
+module FlowLog
+  def self.info(event, data = {})
+    puts JSON.generate({ ts: Time.now.utc.iso8601, level: "INFO", event: event }.merge(data))
+    $stdout.flush
+  end
+
+  def self.error(event, data = {})
+    puts JSON.generate({ ts: Time.now.utc.iso8601, level: "ERROR", event: event }.merge(data))
+    $stdout.flush
+  end
 end
 
 class RodaApp < Roda
@@ -11,21 +20,20 @@ class RodaApp < Roda
   plugin :json
 
   route do |r|
-
     r.on "api" do
       r.post "chat" do
         api_key = ENV["GEMINI_API_KEY"]
 
         unless api_key && !api_key.strip.empty?
           response.status = 500
-          next({ error: "GEMINI_API_KEY não configurada." }.to_json)
+          next({ error: "GEMINI_API_KEY não configurada no .env" }.to_json)
         end
 
         request.body.rewind
         body = JSON.parse(request.body.read) rescue {}
 
         system_text = body["system"].to_s[0, 8000]
-        conv        = Array(body["messages"]).last(20)
+        conv = Array(body["messages"]).last(20)
 
         contents = conv.map do |msg|
           role = msg["role"] == "assistant" ? "model" : "user"
@@ -33,15 +41,21 @@ class RodaApp < Roda
         end
 
         payload = {
-          system_instruction: { parts: [{ text: system_text }] },
-          contents:           contents,
-          generationConfig:   { maxOutputTokens: 800 }
+          system_instruction: {
+            parts: [{ text: system_text }]
+          },
+          contents: contents,
+          generationConfig: {
+            maxOutputTokens: 800,
+            temperature: 0.7
+          }
         }
 
-        model = "gemini-2.0-flash"
-        uri   = URI("https://generativelanguage.googleapis.com/v1beta/models/#{model}:generateContent?key=#{api_key}")
-        http  = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl      = true
+        model = "gemini-2.5-flash-lite"
+        uri = URI("https://generativelanguage.googleapis.com/v1beta/models/#{model}:generateContent?key=#{api_key}")
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
         http.open_timeout = 10
         http.read_timeout = 60
 
@@ -50,25 +64,27 @@ class RodaApp < Roda
         req.body = payload.to_json
 
         begin
-          res    = http.request(req)
-          parsed = JSON.parse(res.body)
-
-          response["Content-Type"] = "application/json"
+          res = http.request(req)
+          parsed = JSON.parse(res.body) rescue {}
 
           if res.code == "200"
             text = parsed.dig("candidates", 0, "content", "parts", 0, "text") || ""
+            response["Content-Type"] = "application/json"
             { reply: text }.to_json
           else
+            $stderr.puts "[FlowAI] Erro Gemini #{res.code}: #{res.body}"
+
+            error_msg = parsed.dig("error", "message") || "Erro na API (Status #{res.code})"
             response.status = res.code.to_i
-            { error: parsed.dig("error", "message") || "Erro #{res.code}" }.to_json
+            { error: error_msg }.to_json
           end
 
         rescue Net::OpenTimeout, Net::ReadTimeout
           response.status = 504
-          { error: "Timeout. Tente novamente." }.to_json
+          { error: "A IA demorou muito para responder. Tente novamente." }.to_json
         rescue => e
           response.status = 502
-          { error: "Erro interno: #{e.message}" }.to_json
+          { error: "Erro interno no servidor: #{e.message}" }.to_json
         end
       end
     end
