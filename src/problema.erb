@@ -1,0 +1,30 @@
+---
+layout: default
+title: Problema
+---
+<section class="slide">
+  <div style="animation:fadeUp .5s .05s both;margin-bottom:14px">
+    <span class="slide-tag slide-tag--white"><%= site.data.ai_content.problema.tag %></span>
+  </div>
+  <h2 class="slide-title slide-title--lg" style="animation:fadeUp .5s .15s both;margin-bottom:40px">
+    Acesso ao pensamento<br><span class="neon">criativo é exclusivo.</span>
+  </h2>
+  <div class="g3" style="animation:fadeUp .5s .3s both">
+    <% site.data.ai_content.problema.cards.each_with_index do |card, i| %>
+      <div class="card-dark" style="animation-delay:<%= i * 0.08 %>s">
+        <div class="card-dark__num"><%= card.num %></div>
+        <div class="card-dark__dot"></div>
+        <div class="card-dark__title"><%= card.title %></div>
+        <p class="card-dark__body"><%= card.body.strip %></p>
+      </div>
+    <% end %>
+  </div>
+  <div style="animation:fadeUp .5s .55s both;margin-top:36px;padding:16px 20px;border:1px solid var(--gray2);border-radius:var(--radius-md);background:var(--surface);display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <span style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Contexto</span>
+    <span style="width:1px;height:24px;background:var(--gray2)"></span>
+    <span style="font-size:11px;color:var(--muted);font-weight:300;line-height:1.5">
+      Oxford/MIT: <strong style="color:var(--white)">47%</strong> das profissões têm alta probabilidade de automação nos próximos 20 anos.
+      O diferencial humano que sobrevive? <strong style="color:var(--neon)">Criatividade e autoconhecimento.</strong>
+    </span>
+  </div>
+</section>

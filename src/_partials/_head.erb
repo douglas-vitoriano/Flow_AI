@@ -1,0 +1,17 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<% resource_title = strip_html(strip_newlines(title)) %>
+<title><% if resource_title && resource_title != "Index" %><%= resource_title %> — Flow AI<% else %>Flow AI · Mentor Criativo Digital<% end %></title>
+<meta name="description" content="Flow AI: o mentor criativo digital inspirado em Murilo Gun. 3 modos especializados — Criatividade, Reflexão e Marca Pessoal. IA real, voz real, impacto real.">
+<meta property="og:title" content="Flow AI — Mentor Criativo Digital">
+<meta property="og:description" content="O jeito único de Murilo Gun de pensar, disponível a qualquer pessoa, a qualquer hora.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#080808">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%2300FF00%22>⟳</text></svg>">
+<link rel="stylesheet" href="<%= asset_path :css %>">
+<script src="<%= asset_path :js %>" defer></script>

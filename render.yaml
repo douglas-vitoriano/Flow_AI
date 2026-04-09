@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: flow-ai
+    runtime: ruby
+    buildCommand: bundle install && bin/bridgetown build
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: RACK_ENV
+        value: production
+      - key: BRIDGETOWN_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false

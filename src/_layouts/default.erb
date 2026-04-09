@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <%= render "head", metadata: site.metadata, title: data.title %>
+  </head>
+  <body>
+
+    <header class="topbar" role="banner">
+      <a class="topbar__brand" href="/" aria-label="Flow AI — Início">
+        <span class="topbar__mark" aria-hidden="true">⟳</span>
+        <span class="topbar__name">FLOW AI</span>
+        <span class="topbar__sep is-hidden-mobile" aria-hidden="true">·</span>
+        <span class="topbar__sub is-hidden-mobile">Mentor Criativo Digital</span>
+      </a>
+
+      <nav class="topbar__nav" aria-label="Navegação entre slides">
+        <% slides = [
+          ['Capa',          '/'],
+          ['Problema',      '/problema/'],
+          ['Solução',       '/solucao/'],
+          ['Modos',         '/modos/'],
+          ['Como Funciona', '/funcionamento/'],
+          ['Tecnologia',    '/tech/'],
+          ['Demo',          '/demo/'],
+          ['Roadmap',       '/roadmap/'],
+          ['Resultado',     '/resultado/'],
+          ['Próximo Passo', '/passos/'],
+        ] %>
+        <% slides.each do |label, path| %>
+          <% is_active = resource.relative_url == path || (path == '/' && resource.relative_url == '/index.html') %>
+          <a href="<%= path %>" class="<%= is_active ? 'is-active' : '' %>"><%= label %></a>
+        <% end %>
+      </nav>
+
+      <div class="topbar__right">
+        <span class="topbar__counter"></span>
+        <button class="topbar__burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="slideMenu">☰</button>
+      </div>
+    </header>
+
+    <div class="slide-menu" id="slideMenu" role="dialog" aria-label="Menu de slides">
+      <% slides.each_with_index do |(label, path), i| %>
+        <% is_active = resource.relative_url == path %>
+        <a href="<%= path %>" class="slide-menu__item <%= is_active ? 'is-active' : '' %>">
+          <span class="slide-menu__num"><%= sprintf('%02d', i + 1) %></span>
+          <%= label %>
+        </a>
+      <% end %>
+    </div>
+
+    <div class="page-wrap">
+      <main id="main-content" tabindex="-1">
+        <%= yield %>
+      </main>
+      <%= render "footer", metadata: site.metadata %>
+    </div>
+
+    <%
+      slide_urls = ['/', '/problema/', '/solucao/', '/modos/', '/funcionamento/', '/tech/', '/demo/', '/roadmap/', '/resultado/', '/passos/']
+      curr_path  = resource.relative_url
+      curr_idx   = slide_urls.index(curr_path) || 0
+      prev_url   = curr_idx > 0                     ? slide_urls[curr_idx - 1] : nil
+      next_url   = curr_idx < slide_urls.length - 1 ? slide_urls[curr_idx + 1] : nil
+    %>
+
+    <% if prev_url %>
+      <a href="<%= prev_url %>" class="nav-arrow nav-arrow--left" aria-label="Slide anterior">←</a>
+    <% else %>
+      <span class="nav-arrow nav-arrow--left is-ghost" aria-hidden="true">←</span>
+    <% end %>
+    <% if next_url %>
+      <a href="<%= next_url %>" class="nav-arrow nav-arrow--right" aria-label="Próximo slide">→</a>
+    <% else %>
+      <span class="nav-arrow nav-arrow--right is-ghost" aria-hidden="true">→</span>
+    <% end %>
+
+    <div class="tablet-dots" aria-hidden="true">
+      <% slide_urls.each_with_index do |url, i| %>
+        <a href="<%= url %>" class="dot <%= i == curr_idx ? 'is-active' : '' %>" tabindex="-1"></a>
+      <% end %>
+    </div>
+
+    <nav class="mobile-bar" aria-label="Navegação mobile">
+      <% if prev_url %>
+        <a href="<%= prev_url %>" class="mobile-bar__btn" aria-label="Slide anterior">←</a>
+      <% else %>
+        <span class="mobile-bar__btn is-ghost" aria-hidden="true">←</span>
+      <% end %>
+      <div class="dots" aria-hidden="true">
+        <% slide_urls.each_with_index do |url, i| %>
+          <a href="<%= url %>" class="dot <%= i == curr_idx ? 'is-active' : '' %>" tabindex="-1"></a>
+        <% end %>
+      </div>
+      <% if next_url %>
+        <a href="<%= next_url %>" class="mobile-bar__btn" aria-label="Próximo slide">→</a>
+      <% else %>
+        <span class="mobile-bar__btn is-ghost" aria-hidden="true">→</span>
+      <% end %>
+    </nav>
+
+    <span class="kbd-hint" aria-hidden="true">← → navegar &nbsp;·&nbsp; esc fechar menu</span>
+
+  </body>
+</html>

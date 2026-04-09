@@ -1,0 +1,29 @@
+---
+layout: default
+title: Roadmap
+---
+<% rm = site.data.ai_content.roadmap %>
+<section class="slide slide--top">
+  <div style="animation:fadeUp .5s .05s both;margin-bottom:14px">
+    <span class="slide-tag"><%= rm.tag %></span>
+  </div>
+  <h2 class="slide-title slide-title--lg" style="animation:fadeUp .5s .15s both;margin-bottom:40px">
+    <%= rm.title_1 %><br><span class="neon"><%= rm.title_2 %></span>
+  </h2>
+  <div class="g6" style="animation:fadeUp .5s .3s both">
+    <% rm.phases.each_with_index do |phase, i| %>
+      <div class="phase-wrap" style="animation-delay:<%= i * 0.06 %>s">
+        <div class="phase-dot <%= phase.done ? 'phase-dot--done' : 'phase-dot--todo' %>">
+          <%= phase.done ? '✓' : (i + 1).to_s %>
+        </div>
+        <div>
+          <div class="phase-weeks"><%= phase.weeks %></div>
+          <div class="phase-title"><%= phase.title %></div>
+          <% phase.items.each do |item| %>
+            <div class="phase-item">· <%= item %></div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>

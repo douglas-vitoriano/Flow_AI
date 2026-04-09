@@ -1,0 +1,167 @@
+---
+layout: default
+title: Demo
+---
+<% prompts = site.data.ai_content.ai_prompts %>
+<section class="slide slide--top">
+  <div style="animation:fadeUp .5s .05s both;margin-bottom:12px">
+    <span class="slide-tag">Demo ao Vivo · IA Real</span>
+  </div>
+  <h2 class="slide-title slide-title--md" style="animation:fadeUp .5s .15s both;margin-bottom:8px">
+    Cada modo, <span class="neon">um mundo.</span>
+  </h2>
+  <p class="slide-lead" style="animation:fadeUp .5s .2s both;margin-bottom:22px;font-size:12px">
+    IA real. Respostas geradas ao vivo, calibradas com a essência do projeto.
+  </p>
+
+  <div class="demo-tabs" style="animation:fadeUp .5s .25s both">
+    <button class="demo-tab" data-mode="criatividade" style="--tab-color:#F5A623">✦ Criatividade</button>
+    <button class="demo-tab" data-mode="reflexao"    style="--tab-color:#7B68EE">◎ Reflexão</button>
+    <button class="demo-tab" data-mode="marca"       style="--tab-color:#00C896">◆ Marca</button>
+  </div>
+
+  <div class="demo-live-panel" style="animation:fadeUp .5s .35s both">
+    <div class="chat-wrap-live" id="chatWrap"></div>
+    <div class="chat-input-row">
+      <textarea
+        id="chatInput"
+        class="chat-textarea"
+        placeholder="Digite sua dúvida..."
+        rows="2"
+        maxlength="600"
+      ></textarea>
+      <button class="chat-send-btn" id="sendBtn" aria-label="Enviar">
+        <span class="send-icon">→</span>
+      </button>
+    </div>
+    <div class="chat-hint-bar">Enter envia · Shift+Enter pula linha</div>
+  </div>
+</section>
+
+<script id="flowPrompts" type="application/json">
+{
+  "criatividade": <%== prompts.criatividade.to_json %>,
+  "reflexao":     <%== prompts.reflexao.to_json %>,
+  "marca":        <%== prompts.marca.to_json %>
+}
+</script>
+
+<script>
+(function () {
+  const SYSTEM = JSON.parse(document.getElementById('flowPrompts').textContent);
+  const API_URL = '/api/chat';
+
+  const MODE_COLOR = { criatividade:'#F5A623', reflexao:'#7B68EE', marca:'#00C896' };
+  const MODE_ICON  = { criatividade:'✦', reflexao:'◎', marca:'◆' };
+
+  const WELCOME = {
+    criatividade: 'Modo Criatividade ativado.\nQual ideia parece impossível hoje?',
+    reflexao:     'Modo Reflexão ativado.\nO que você está evitando sentir?',
+    marca:        'Modo Marca Pessoal ativado.\nComo você quer ser lembrado?'
+  };
+
+  let currentMode = 'criatividade';
+  let isLoading = false;
+  let history = [];
+
+  const chatWrap = document.getElementById('chatWrap');
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const tabs = document.querySelectorAll('.demo-tab');
+
+  const formatText = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+
+  function scroll() { chatWrap.scrollTop = chatWrap.scrollHeight; }
+
+  function addBubble(role, text, mode) {
+    const m = mode || currentMode;
+    const color = MODE_COLOR[m];
+    const row = document.createElement('div');
+    row.className = `chat-row ${role === 'user' ? 'chat-row--user' : ''}`;
+
+    if (role === 'assistant') {
+      row.innerHTML = `
+        <div class="chat-avatar" style="border-color:${color}33;color:${color}">${MODE_ICON[m]}</div>
+        <div class="bubble bubble--ai" style="border-color:${color}1a">${formatText(text)}</div>`;
+    } else {
+      row.innerHTML = `<div class="bubble bubble--user">${formatText(text)}</div>`;
+    }
+    chatWrap.appendChild(row);
+    scroll();
+  }
+
+  function showThinking() {
+    const color = MODE_COLOR[currentMode];
+    const row = document.createElement('div');
+    row.className = 'thinking-row'; row.id = 'thinkRow';
+    row.innerHTML = `
+      <div class="chat-avatar" style="border-color:${color}33;color:${color}">${MODE_ICON[currentMode]}</div>
+      <div class="thinking-dots"><span></span><span></span><span></span></div>`;
+    chatWrap.appendChild(row); scroll();
+  }
+
+  function removeThinking() { document.getElementById('thinkRow')?.remove(); }
+
+  function showError(msg) {
+    const el = document.createElement('div');
+    el.className = 'error-bubble';
+    el.innerHTML = `⚠ <strong>Erro:</strong> ${msg}`;
+    chatWrap.appendChild(el); scroll();
+  }
+
+  async function send() {
+    const text = chatInput.value.trim();
+    if (!text || isLoading) return;
+
+    isLoading = true; sendBtn.disabled = true;
+    chatInput.value = ''; chatInput.style.height = 'auto';
+
+    addBubble('user', text);
+    history.push({ role: 'user', content: text });
+    showThinking();
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: SYSTEM[currentMode],
+          messages: history
+        })
+      });
+
+      const data = await res.json();
+      removeThinking();
+
+      if (!res.ok) {
+        throw new Error(data.error || `Status ${res.status}`);
+      }
+
+      const reply = data.reply || '';
+      if (!reply) throw new Error('A IA não retornou conteúdo.');
+
+      history.push({ role: 'assistant', content: reply });
+      addBubble('assistant', reply, currentMode);
+
+    } catch (e) {
+      removeThinking();
+      showError(e.message);
+      history.pop(); // Remove a última mensagem do user do histórico para não travar a conversa
+    } finally {
+      isLoading = false; sendBtn.disabled = false; chatInput.focus();
+    }
+  }
+
+  function activateMode(mode) {
+    currentMode = mode; history = []; chatWrap.innerHTML = '';
+    tabs.forEach(t => t.classList.toggle('is-active', t.dataset.mode === mode));
+    addBubble('assistant', WELCOME[mode], mode);
+  }
+
+  tabs.forEach(tab => tab.addEventListener('click', () => activateMode(tab.dataset.mode)));
+  sendBtn.addEventListener('click', send);
+  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+
+  activateMode('criatividade');
+})();
+</script>

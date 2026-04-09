@@ -1,0 +1,42 @@
+---
+layout: default
+title: Tecnologia
+---
+<% tech = site.data.ai_content.tech %>
+<section class="slide">
+  <div class="grow">
+    <div>
+      <div style="animation:fadeUp .5s .05s both;margin-bottom:14px">
+        <span class="slide-tag"><%= tech.tag %></span>
+      </div>
+      <h2 class="slide-title slide-title--lg" style="animation:fadeUp .5s .15s both">
+        <%= tech.title_1 %><br><span class="neon"><%= tech.title_2 %></span>
+      </h2>
+      <p class="slide-lead" style="animation:fadeUp .5s .25s both;margin-bottom:28px"><%= tech.lead.strip %></p>
+      <ul class="check-list" style="animation:fadeUp .5s .35s both">
+        <% tech.checks.each do |item| %>
+          <li class="check-item"><span class="neon">✓</span><span><%= item %></span></li>
+        <% end %>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;animation:fadeUp .5s .25s both">
+      <% tech.stack.each do |layer| %>
+        <div class="stack-row">
+          <span class="stack-row__layer" style="color:<%= layer.color %>"><%= layer.layer %></span>
+          <div class="stack-chips">
+            <% layer.chips.each do |chip| %>
+              <span class="stack-chip"><%= chip %></span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <div style="margin-top:8px;padding:12px 16px;border:1px solid var(--gray2);border-radius:var(--radius-sm);background:var(--surface)">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.12em;margin-bottom:6px;text-transform:uppercase">Arquitetura RAG</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7;font-weight:300">
+          Transcrições de Murilo → <span style="color:var(--white)">Embeddings</span> → Pinecone →
+          Retrieval contextual → <span style="color:var(--neon)">Gemini 2.5 Flash</span> → Resposta mimética
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

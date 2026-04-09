@@ -1,0 +1,36 @@
+---
+layout: default
+title: Solução
+---
+<% sol = site.data.ai_content.solucao %>
+<section class="slide">
+  <div class="grow">
+    <div>
+      <div style="animation:fadeUp .5s .05s both;margin-bottom:14px">
+        <span class="slide-tag"><%= sol.tag %></span>
+      </div>
+      <h2 class="slide-title slide-title--lg" style="animation:fadeUp .5s .15s both">
+        <%= sol.title_1 %><br><span class="neon"><%= sol.title_2 %></span><br><%= sol.title_3 %>
+      </h2>
+      <p class="slide-lead" style="animation:fadeUp .5s .25s both;margin-bottom:28px"><%= sol.lead.strip %></p>
+      <ul class="check-list" style="animation:fadeUp .5s .35s both">
+        <% sol.checks.each do |item| %>
+          <li class="check-item"><span class="neon">✓</span><span><%= item %></span></li>
+        <% end %>
+      </ul>
+    </div>
+    <div style="animation:fadeUp .5s .3s both">
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.12em;margin-bottom:14px;text-transform:uppercase">Preview · Modo Marca Pessoal</div>
+      <div class="chat-wrap">
+        <div class="chat-row chat-row--user">
+          <div class="bubble bubble--user"><%= sol.demo_user %></div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-avatar" style="border-color:rgba(232,255,0,.3);color:var(--neon)">✦</div>
+          <div class="bubble bubble--ai" style="border-color:rgba(232,255,0,.15)"><%= sol.demo_ai.strip.gsub('VOCÊ', '<strong style="color:var(--neon)">VOCÊ</strong>').html_safe %></div>
+        </div>
+        <div class="thinking" style="margin-left:36px">pensando...</div>
+      </div>
+    </div>
+  </div>
+</section>

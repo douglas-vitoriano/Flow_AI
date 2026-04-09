@@ -1,0 +1,26 @@
+---
+layout: default
+title: Modos
+---
+<% modos = site.data.ai_content.modos %>
+<section class="slide slide--top">
+  <div style="animation:fadeUp .5s .05s both;margin-bottom:14px">
+    <span class="slide-tag"><%= modos.tag %></span>
+  </div>
+  <h2 class="slide-title slide-title--lg" style="animation:fadeUp .5s .15s both;margin-bottom:36px">
+    <%= modos.title_1 %> <span class="neon"><%= modos.title_2 %></span>
+  </h2>
+  <div class="g3" style="animation:fadeUp .5s .3s both">
+    <% modos.modes.each_with_index do |mode, i| %>
+      <div class="mode-card" style="border:1px solid <%= mode.color %>33;animation-delay:<%= i * 0.08 %>s">
+        <div class="mode-card__icon" style="color:<%= mode.color %>;text-shadow:0 0 16px <%= mode.color %>80"><%= mode.icon %></div>
+        <div>
+          <div class="mode-card__name"><%= mode.name %></div>
+          <div class="mode-card__sub" style="color:<%= mode.color %>"><%= mode.sub %></div>
+        </div>
+        <p class="mode-card__desc"><%= mode.desc.strip %></p>
+        <a href="/demo/" class="mode-card__badge" style="border:1px solid <%= mode.color %>40;color:<%= mode.color %>"><%= mode.badge %></a>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+---
+layout: default
+title: Resultado
+---
+<% res = site.data.ai_content.resultado %>
+<section class="slide slide--top">
+  <div style="animation:fadeUp .5s .05s both;margin-bottom:14px">
+    <span class="slide-tag"><%= res.tag %></span>
+  </div>
+  <h2 class="slide-title slide-title--lg" style="animation:fadeUp .5s .15s both;margin-bottom:18px">
+    <%= res.title_1 %><br><span class="neon"><%= res.title_2 %></span><br><%= res.title_3 %>
+  </h2>
+  <p class="slide-lead" style="animation:fadeUp .5s .25s both;margin-bottom:40px"><%= res.lead.strip %></p>
+  <div class="g4" style="animation:fadeUp .5s .35s both">
+    <% res.metrics.each do |m| %>
+      <div class="metric-card">
+        <div class="metric-card__val"><%= m.val %></div>
+        <div class="metric-card__label"><%= m.label %></div>
+        <div class="metric-card__sub"><%= m.sub %></div>
+      </div>
+    <% end %>
+  </div>
+</section>

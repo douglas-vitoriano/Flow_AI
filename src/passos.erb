@@ -1,0 +1,44 @@
+---
+layout: default
+title: Próximo Passo
+---
+<% p = site.data.ai_content.passos %>
+<section class="slide slide--center" style="overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,255,0,.08) 0%,transparent 65%);pointer-events:none"></div>
+  <div class="cta-ring" style="width:min(520px,90vw);height:min(520px,90vw);border:1px solid rgba(232,255,0,.1)"></div>
+  <div class="cta-ring" style="width:min(320px,60vw);height:min(320px,60vw);border:1px solid rgba(232,255,0,.2);animation-delay:2s"></div>
+
+  <div style="position:relative;z-index:1;max-width:540px;width:100%">
+    <div style="animation:fadeUp .6s .1s both;margin-bottom:28px">
+      <span class="slide-tag"><%= p.tag %></span>
+    </div>
+    <div style="animation:fadeUp .6s .2s both;margin-bottom:24px">
+      <div class="slide-title slide-title--xl">
+        <%= p.title_1 %><br>
+        <span style="color:var(--neon);text-shadow:0 0 48px rgba(232,255,0,.9),0 0 96px rgba(232,255,0,.3)"><%= p.title_2 %></span>
+      </div>
+    </div>
+    <p class="slide-lead" style="animation:fadeUp .6s .32s both;margin:0 auto 44px">
+      <%= p.lead.strip %><br>
+      Falta só: <strong style="color:var(--white)"><%= p.lead_bold %></strong>
+    </p>
+    <div class="btn-group" style="animation:fadeUp .6s .44s both">
+      <span class="btn-primary"><%= p.cta_primary %></span>
+      <a href="/demo/" class="btn-secondary"><%= p.cta_secondary %></a>
+    </div>
+    <div class="cta-bottom" style="animation:fadeUp .6s .56s both">
+      <div class="cta-icon">
+        <span style="font-size:18px;color:var(--neon)">⟳</span>
+        <span class="mono muted" style="font-size:9px;letter-spacing:.1em">Flow AI</span>
+      </div>
+      <div class="cta-icon">
+        <span style="font-size:18px;color:var(--neon)">✦</span>
+        <span class="mono muted" style="font-size:9px;letter-spacing:.1em">Criatividade</span>
+      </div>
+      <div class="cta-icon">
+        <span style="font-size:18px;color:var(--neon)">◎</span>
+        <span class="mono muted" style="font-size:9px;letter-spacing:.1em">Impacto</span>
+      </div>
+    </div>
+  </div>
+</section>

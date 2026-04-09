@@ -1,0 +1,38 @@
+---
+layout: default
+title: Capa
+---
+<section class="slide slide--center">
+  <div class="cover-grid"></div>
+  <div class="cover-glow"></div>
+  <div class="cover-scanline"></div>
+  <div style="position:absolute;width:min(640px,95vw);height:min(640px,95vw);border-radius:50%;border:1px solid rgba(232,255,0,.05);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:borderPulse 6s ease-in-out infinite"></div>
+
+  <div style="position:relative;z-index:1;max-width:680px;width:100%">
+    <div style="animation:fadeUp .6s .1s both;margin-bottom:24px">
+      <span class="slide-tag"><%= site.data.ai_content.capa.tag %></span>
+    </div>
+    <div style="animation:fadeUp .6s .25s both">
+      <div class="cover-flow"><%= site.data.ai_content.capa.headline_1 %></div>
+      <div class="cover-ai"><%= site.data.ai_content.capa.headline_2 %></div>
+    </div>
+    <div style="animation:fadeUp .6s .4s both;margin-top:28px;margin-bottom:40px">
+      <p class="slide-lead" style="margin:0 auto;font-size:clamp(13px,1.8vw,16px)">
+        <%= site.data.ai_content.capa.lead.gsub('Murilo Gun', '<strong style="color:var(--white);font-weight:700">Murilo Gun</strong>').html_safe %>
+      </p>
+    </div>
+    <div style="animation:fadeUp .6s .52s both">
+      <a href="/problema/" class="btn-primary" style="margin:0 auto">
+        <%= site.data.ai_content.capa.cta %>
+      </a>
+    </div>
+    <div class="cover-icons" style="animation:fadeUp .6s .68s both">
+      <% site.data.ai_content.capa.icons.each do |icon| %>
+        <div class="cover-icon">
+          <span class="cover-icon__glyph"><%= icon.glyph %></span>
+          <span class="cover-icon__label"><%= icon.label %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
