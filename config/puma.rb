@@ -1,7 +1,7 @@
 port        ENV.fetch("PORT") { 4000 }
 environment ENV.fetch("RACK_ENV") { "development" }
 workers     0
-threads     1, 3
+threads     1, 5
 
 preload_app!
 
