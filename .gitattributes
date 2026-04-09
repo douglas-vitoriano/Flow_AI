@@ -1,0 +1,11 @@
+frontend/javascript/** linguist-vendored
+frontend/styles/**     linguist-vendored
+
+esbuild.config.js      linguist-vendored
+config/esbuild.defaults.js linguist-vendored
+postcss.config.js      linguist-vendored
+
+output/**              linguist-generated
+.bridgetown-cache/**   linguist-generated
+
+*.erb linguist-language=Ruby
