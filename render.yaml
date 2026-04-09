@@ -2,7 +2,7 @@ services:
   - type: web
     name: flow-ai
     runtime: ruby
-    buildCommand: bundle install && bin/bridgetown build
+    buildCommand: bundle install && npm install && npm run esbuild && bin/bridgetown build
     startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: RACK_ENV
