@@ -21,7 +21,7 @@ slides:
     url: "/passos/"
 
 capa:
-  tag: "Apresentação Exclusiva · 2025"
+  tag_prefix: "Apresentação Exclusiva ·"
   headline_1: "FLOW"
   headline_2: "AI"
   lead: "O mentor criativo digital inspirado em Murilo Gun"
