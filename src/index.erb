@@ -10,24 +10,24 @@ title: Inicio
 
   <div style="position:relative;z-index:1;max-width:680px;width:100%">
     <div style="animation:fadeUp .6s .1s both;margin-bottom:24px">
-      <span class="slide-tag"><%= site.data.ai_content.capa.tag_prefix %> <%= Time.now.year %></span>
+      <span class="slide-tag"><%= site.data.content.capa.tag_prefix %> <%= Time.now.year %></span>
     </div>
     <div style="animation:fadeUp .6s .25s both">
-      <div class="cover-flow"><%= site.data.ai_content.capa.headline_1 %></div>
-      <div class="cover-ai"><%= site.data.ai_content.capa.headline_2 %></div>
+      <div class="cover-flow"><%= site.data.content.capa.headline_1 %></div>
+      <div class="cover-ai"><%= site.data.content.capa.headline_2 %></div>
     </div>
     <div style="animation:fadeUp .6s .4s both;margin-top:28px;margin-bottom:40px">
       <p class="slide-lead" style="margin:0 auto;font-size:clamp(13px,1.8vw,16px)">
-        <%= site.data.ai_content.capa.lead.gsub('Murilo Gun', '<strong style="color:var(--white);font-weight:700">Murilo Gun</strong>').html_safe %>
+        <%= site.data.content.capa.lead.gsub('Murilo Gun', '<strong style="color:var(--white);font-weight:700">Murilo Gun</strong>').html_safe %>
       </p>
     </div>
     <div style="animation:fadeUp .6s .52s both">
       <a href="/problema/" class="btn-primary" style="margin:0 auto">
-        <%= site.data.ai_content.capa.cta %>
+        <%= site.data.content.capa.cta %>
       </a>
     </div>
     <div class="cover-icons" style="animation:fadeUp .6s .68s both">
-      <% site.data.ai_content.capa.icons.each do |icon| %>
+      <% site.data.content.capa.icons.each do |icon| %>
         <div class="cover-icon">
           <span class="cover-icon__glyph"><%= icon.glyph %></span>
           <span class="cover-icon__label"><%= icon.label %></span>

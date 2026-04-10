@@ -14,18 +14,7 @@
       </a>
 
       <nav class="topbar__nav" aria-label="Navegação entre slides">
-        <% slides = [
-          ['Inicio',          '/'],
-          ['Problema',      '/problema/'],
-          ['Solução',       '/solucao/'],
-          ['Modos',         '/modos/'],
-          ['Como Funciona', '/funcionamento/'],
-          ['Tecnologia',    '/tech/'],
-          ['Demo',          '/demo/'],
-          ['Roadmap',       '/roadmap/'],
-          ['Resultado',     '/resultado/'],
-          ['Próximo Passo', '/passos/'],
-        ] %>
+        <% slides = site.data.slides.map { |s| [s.label, s.url] } %>
         <% slides.each do |label, path| %>
           <% is_active = resource.relative_url == path || (path == '/' && resource.relative_url == '/index.html') %>
           <a href="<%= path %>" class="<%= is_active ? 'is-active' : '' %>"><%= label %></a>
@@ -55,7 +44,7 @@
     </div>
 
     <%
-      slide_urls = ['/', '/problema/', '/solucao/', '/modos/', '/funcionamento/', '/tech/', '/demo/', '/roadmap/', '/resultado/', '/passos/']
+      slide_urls = site.data.slides.map(&:url)
       curr_path  = resource.relative_url
       curr_idx   = slide_urls.index(curr_path) || 0
       prev_url   = curr_idx > 0                     ? slide_urls[curr_idx - 1] : nil
